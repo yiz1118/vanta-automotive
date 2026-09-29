@@ -1,0 +1,8 @@
+node_modules/
+.next/
+test-results/
+test-results-icons/
+playwright-report/
+qa/*.json
+qa/*.html
+*.tsbuildinfo
