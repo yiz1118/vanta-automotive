@@ -41,7 +41,7 @@ All creator identity and contact information is centralized in [config/creator.t
 
 The native **Start a Project** disclosure offers Email and WhatsApp without requiring client JavaScript. LinkedIn and GitHub are available in the contact row. These are real creator contact links; the automotive **Discuss a Build** flow remains the local concept demonstration.
 
-`creator.portfolioUrl` is currently `null`, so no portfolio CTA is rendered. Replace `null` with the full HTTPS URL of the completed portfolio, then rebuild and restart or redeploy. **View Portfolio** will appear automatically; no component changes are needed.
+`creator.portfolioUrl` configures the live **View Portfolio** link. To change its destination, update this value, then rebuild and restart or redeploy. Set it to `null` to hide the link; no component changes are needed.
 
 Future analytics can use `data-creator-event` with `start_project`, `email`, `whatsapp`, `linkedin`, `github` and `portfolio`. The surrounding section's `data-creator-project` supplies the project context. No analytics library, tracking requests or click handler has been added.
 

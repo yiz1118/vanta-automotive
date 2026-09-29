@@ -12,7 +12,7 @@ test("every page credits its independent creator without mixing the build enquir
     await expect(creator).toContainText("Independent Web & App Developer");
     await expect(creator).toContainText("Malaysia · Working with clients worldwide");
     await expect(creator).toContainText("Available for freelance projects worldwide");
-    await expect(creator.getByText("View Portfolio", { exact: true })).toHaveCount(0);
+    await expect(creator.getByRole("link", { name: "View Portfolio", exact: true })).toHaveAttribute("href", "https://alson-portfolio-nine.vercel.app/");
     await expect(page.locator(".footer-cta")).toHaveAttribute("href", "/enquiry");
   }
 });
@@ -65,7 +65,7 @@ test("creator contact links are safe, labeled and identifiable for future analyt
     await expect(icon).toHaveAttribute("aria-hidden", "true");
   }
   await expect(creator).not.toContainText(/[\u2190-\u21ff\u2600-\u27bf\ufe0e\ufe0f]/u);
-  await expect(creator.locator('a[href="#"], a[href^="javascript:"], [data-creator-event="portfolio"]')).toHaveCount(0);
+  await expect(creator.locator('a[href="#"], a[href^="javascript:"]')).toHaveCount(0);
   const accessibility = await new AxeBuilder({ page }).include(".creator-layer").analyze();
   expect(accessibility.violations).toEqual([]);
 });
