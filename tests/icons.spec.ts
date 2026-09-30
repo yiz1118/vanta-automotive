@@ -3,18 +3,24 @@ import { expect, test } from "@playwright/test";
 const routes = ["/", "/builds", "/builds/v01-grand-touring", "/builds/v02-touring-sport", "/builds/v03-lightweight", "/services", "/engineering", "/gallery", "/about", "/enquiry"];
 const textIcons = /[\u2190-\u21ff\u2600-\u27bf\ufe0e\ufe0f]/u;
 
-test("interface icons cannot fall back to platform emoji glyphs", async ({ page }) => {
+test("interface icons cannot fall back to platform emoji glyphs", async ({ browser }) => {
+  const context = await browser.newContext();
   for (const route of routes) {
-    await page.goto(route);
+    const page = await context.newPage();
+    await page.goto(route, { waitUntil: "domcontentloaded" });
     await expect(page.locator("body")).not.toContainText(textIcons);
     const icons = page.locator("svg.ui-icon");
     expect(await icons.count(), `SVG action icons on ${route}`).toBeGreaterThan(0);
-    for (const icon of await icons.all()) {
-      await expect(icon).toHaveAttribute("aria-hidden", "true");
-      await expect(icon).toHaveAttribute("stroke", "currentColor");
-      await expect(icon).toHaveAttribute("fill", "none");
-    }
+    // Read one DOM snapshot so hydration cannot invalidate indexed locators.
+    const attributes = await icons.evaluateAll(nodes => nodes.map(node => ({
+      hidden: node.getAttribute("aria-hidden"),
+      stroke: node.getAttribute("stroke"),
+      fill: node.getAttribute("fill"),
+    })));
+    for (const icon of attributes) expect(icon).toEqual({ hidden: "true", stroke: "currentColor", fill: "none" });
+    await page.close();
   }
+  await context.close();
 });
 
 test("navigation keeps its geometry and inherits monochrome color at requested widths", async ({ browser }, testInfo) => {
@@ -22,7 +28,7 @@ test("navigation keeps its geometry and inherits monochrome color at requested w
     const mobile = width <= 900;
     const context = await browser.newContext({ viewport: { width, height: 900 }, hasTouch: mobile, isMobile: mobile });
     const page = await context.newPage();
-    await page.goto("/");
+    await page.goto("/", { waitUntil: "domcontentloaded" });
     await page.evaluate(() => document.fonts.ready);
     if (mobile) await page.getByRole("button", { name: "Menu", exact: true }).tap();
     const icons = page.locator(mobile ? ".mobile-menu nav a svg" : ".header-enquiry svg");
@@ -35,7 +41,10 @@ test("navigation keeps its geometry and inherits monochrome color at requested w
     }));
     expect(metrics.headerHeight).toBe(width <= 700 ? 70 : 82);
     expect(metrics.overflow).toBe(false);
-    if (mobile) expect(metrics.rowHeights).toEqual([58, 58, 58, 58, 58, 58]);
+    if (mobile) {
+      expect(metrics.rowHeights).toHaveLength(6);
+      for (const height of metrics.rowHeights) expect(height).toBeCloseTo(58, 3);
+    }
     for (const icon of await icons.all()) {
       const color = await icon.evaluate((svg) => ({ stroke: getComputedStyle(svg).stroke, inherited: getComputedStyle(svg.parentElement!).color, background: getComputedStyle(svg).backgroundColor }));
       expect(color.stroke).toBe(color.inherited);

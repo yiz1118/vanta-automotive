@@ -2,7 +2,9 @@ node_modules/
 .next/
 test-results/
 test-results-icons/
+test-results-motion/
 playwright-report/
 qa/*.json
 qa/*.html
+qa/.profiles/
 *.tsbuildinfo

@@ -29,6 +29,14 @@ npx playwright test --config playwright.icons.config.ts
 
 This matrix checks all routes for text-based icon fallbacks, navigation at 375–1440 px, inherited monochrome color, touch targets and gallery controls. WebKit with mobile emulation is a Safari compatibility check; it is not a physical iPhone test. See [the icon-fix evidence](qa/ICON-FIX.md).
 
+For motion regression checks in Chrome and WebKit:
+
+```bash
+npx playwright test --config playwright.motion.config.ts
+```
+
+Motion is configured in `app/motion.css` and the reusable `Reveal` component. Only selected images and content groups opt in; mobile and reduced-motion fallbacks are included. See [the motion audit and QA evidence](qa/MOTION-POLISH.md).
+
 ## Routes
 
 Home `/`, Builds `/builds`, three vehicle routes under `/builds/`, Services `/services`, Engineering `/engineering`, Gallery `/gallery`, About `/about` and Enquiry `/enquiry`.

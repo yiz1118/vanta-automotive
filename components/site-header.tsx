@@ -36,10 +36,10 @@ export function SiteHeader() {
       <span className="concept-label">Concept Project</span>
       <nav className="desktop-nav" aria-label="Primary">{links.slice(0, 4).map((link) => <Link key={link.href} href={link.href} aria-current={pathname === link.href || (link.href === "/builds" && pathname.startsWith("/builds/")) ? "page" : undefined}>{link.label}</Link>)}</nav>
       <Link className="header-enquiry" href="/enquiry">Discuss a build <span className="action-icon" aria-hidden><ArrowUpRightIcon /></span></Link>
-      <button ref={button} className="menu-button" type="button" aria-expanded={open} aria-controls="mobile-navigation" onClick={() => { setOpen(!open); if (!open) requestAnimationFrame(() => menu.current?.querySelector("a")?.focus()); }}><span>{open ? "Close" : "Menu"}</span><span className="menu-lines" aria-hidden><i /><i /></span></button>
+      <button ref={button} className="menu-button" type="button" aria-expanded={open} aria-controls="mobile-navigation" onClick={() => { setOpen(!open); if (!open) requestAnimationFrame(() => menu.current?.querySelector("a")?.focus({ preventScroll: true })); }}><span>{open ? "Close" : "Menu"}</span><span className="menu-lines" aria-hidden><i /><i /></span></button>
     </div>
     <div id="mobile-navigation" ref={menu} className={`mobile-menu ${open ? "is-open" : ""}`} inert={!open}>
-      <nav aria-label="Mobile primary">{links.map((link, index) => <Link onClick={close} key={link.href} href={link.href}><span className="mono">0{index + 1}</span>{link.label}<span className="action-icon" aria-hidden><ArrowUpRightIcon /></span></Link>)}<Link onClick={close} href="/enquiry"><span className="mono">06</span>Discuss a build<span className="action-icon" aria-hidden><ArrowUpRightIcon /></span></Link></nav>
+      <nav aria-label="Mobile primary">{links.map((link, index) => <Link onClick={close} key={link.href} href={link.href} aria-current={pathname === link.href || (link.href === "/builds" && pathname.startsWith("/builds/")) ? "page" : undefined}><span className="mono">0{index + 1}</span>{link.label}<span className="action-icon" aria-hidden><ArrowUpRightIcon /></span></Link>)}<Link onClick={close} href="/enquiry" aria-current={pathname === "/enquiry" ? "page" : undefined}><span className="mono">06</span>Discuss a build<span className="action-icon" aria-hidden><ArrowUpRightIcon /></span></Link></nav>
       <p>VANTA MOTORWORKS · Concept Project</p>
     </div>
   </header>;

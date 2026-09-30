@@ -202,6 +202,8 @@ for (const route of ["/", "/builds", "/builds/v01-grand-touring", "/services", "
 }
 
 test("portfolio screenshots", async ({ page }) => {
+  // Capture the settled design rather than a frame in an entrance transition.
+  await page.emulateMedia({ reducedMotion: "reduce" });
   async function loadPageImages() {
     for (const reveal of await page.locator(".reveal").all()) {
       await reveal.scrollIntoViewIfNeeded();

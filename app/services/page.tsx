@@ -23,7 +23,7 @@ export default function ServicesPage() {
             <Link className="service-example mono" href={`/builds/${example.slug}`}>Related study / {example.code} {example.name} <span className="action-icon" aria-hidden><ArrowUpRightIcon /></span></Link>
           </div>
         </div>
-        <MediaFrame media={service.image} sizes="(max-width: 800px) 100vw, 50vw" />
+        <MediaFrame media={service.image} sizes="(max-width: 800px) 100vw, 50vw" motion={index === 0 ? "image" : index === 1 ? "content" : false} />
       </section>;
     })}</div>
   </div>;

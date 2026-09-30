@@ -24,7 +24,7 @@ The most characteristic moment is the V01 build inspection: imagery, detail poin
 
 ## Motion strategy
 
-Motion is quicker than the architecture portfolio concept without becoming game-like. Short opacity and translation reveals, 140–200 ms control responses and 280–450 ms image or panel transitions create a measured sense of pace. The before/after control, inspection tabs and gallery are user-driven. There is no autoplay video, scroll hijacking, mandatory pinned sequence or WebGL. Reduced-motion preferences remove movement while preserving every interaction. Content remains server-rendered and visible if JavaScript enhancement fails.
+Motion is controlled, kinetic and mechanical. A readable 700 ms heading entrance establishes hierarchy; selected large images use 760 ms transform-based shutters. Specification and process groups reveal once in a short stagger while retaining their actual values. Controls respond in 180 ms, with 220–320 ms inspection and gallery transitions. One shared IntersectionObserver manages the scroll reveals without a continuous scroll loop. Mobile uses smaller translations and simple image fades; reduced-motion preferences remove automatic and hover movement. Native scrolling, immediate navigation and server-rendered content remain available, including when JavaScript or IntersectionObserver is unavailable.
 
 ## Technical presentation
 

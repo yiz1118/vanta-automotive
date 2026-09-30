@@ -1,0 +1,153 @@
+/* VANTA motion: short mechanical feedback, deliberate editorial entrances. */
+:root {
+  --motion-ease: cubic-bezier(.22,.68,0,1);
+  --motion-fast: 180ms;
+  --motion-reveal: 560ms;
+}
+
+/* Content remains visible in server HTML and when JavaScript is unavailable. */
+.reveal { opacity: 1; transform: none; }
+.reveal-content.reveal-ready {
+  opacity: 0;
+  transform: translateY(20px);
+  transition: opacity var(--motion-reveal) var(--motion-ease), transform var(--motion-reveal) var(--motion-ease);
+}
+.reveal-content.reveal-ready.is-visible { opacity: 1; transform: none; }
+.reveal-content:focus-within { opacity: 1; transform: none; transition: none; }
+
+/* A transform-based shutter introduces only selected large photographs. */
+.reveal-image::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: #1b1d1f;
+  pointer-events: none;
+  transform: scaleX(0);
+  transform-origin: right center;
+}
+.reveal-image.reveal-ready::after { transform: scaleX(1); }
+.reveal-image.reveal-ready img { transform: scale(1.025); }
+.reveal-image.reveal-ready.is-visible::after {
+  transform: scaleX(0);
+  transition: transform 760ms var(--motion-ease);
+}
+.reveal-image.reveal-ready.is-visible img {
+  transform: scale(1);
+  transition: transform 840ms var(--motion-ease);
+}
+
+/* Small groups reveal actual specifications; numbers never change or count up. */
+.reveal-stagger.reveal-ready > :is(div,article) {
+  opacity: 0;
+  transform: translateY(16px);
+  transition: opacity 500ms var(--motion-ease), transform 500ms var(--motion-ease);
+}
+.reveal-stagger.reveal-ready > :nth-child(2) { transition-delay: 40ms; }
+.reveal-stagger.reveal-ready > :nth-child(3) { transition-delay: 80ms; }
+.reveal-stagger.reveal-ready > :nth-child(n+4) { transition-delay: 120ms; }
+.reveal-stagger.reveal-ready.is-visible > :is(div,article) { opacity: 1; transform: none; }
+.reveal-stagger.reveal-ready .philosophy-rule { transform: scaleX(0); transform-origin: left; }
+.reveal-stagger.reveal-ready.is-visible .philosophy-rule { transform: scaleX(1); transition: transform 640ms var(--motion-ease) 100ms; }
+
+/* The first frame remains readable; the entrance completes within one second. */
+.hero-kicker, .vehicle-hero-copy > .eyebrow, .page-intro > .eyebrow { animation: heading-enter 440ms var(--motion-ease) both; }
+.home-hero h1, .vehicle-hero-copy h1, .page-intro h1 { animation: heading-enter 660ms var(--motion-ease) 40ms both; }
+.hero-summary, .page-intro-bottom { animation: heading-enter 560ms var(--motion-ease) 100ms both; }
+.hero-actions { animation: heading-enter 500ms var(--motion-ease) 150ms both; }
+@keyframes heading-enter { from { opacity: .78; transform: translateY(16px); } to { opacity: 1; transform: none; } }
+
+/* State changes use short entrances without delaying selection or navigation. */
+.inspection-stage .media-frame { animation: image-change 300ms var(--motion-ease) both; }
+.inspection-copy { animation: panel-change 260ms var(--motion-ease) both; }
+.gallery-tile:nth-child(-n+4) { animation: panel-change 320ms var(--motion-ease) both; }
+.gallery-tile:nth-child(2) { animation-delay: 30ms; }
+.gallery-tile:nth-child(3) { animation-delay: 60ms; }
+.gallery-tile:nth-child(4) { animation-delay: 90ms; }
+.gallery-tile:nth-child(n+5) { animation-delay: 0ms; }
+.lightbox[open] .lightbox-content { animation: panel-change 220ms var(--motion-ease) both; }
+.lightbox-image img { animation: image-change 300ms var(--motion-ease) both; }
+@keyframes panel-change { from { opacity: .65; transform: translateX(10px); } to { opacity: 1; transform: none; } }
+@keyframes image-change { from { opacity: .65; transform: scale(1.015); } to { opacity: 1; transform: scale(1); } }
+
+.desktop-nav a { position: relative; }
+.desktop-nav a::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: -8px;
+  height: 1px;
+  background: currentColor;
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform var(--motion-fast) var(--motion-ease);
+}
+.desktop-nav a[aria-current="page"]::after { transform: scaleX(1); }
+.menu-lines i { transition: transform var(--motion-fast) var(--motion-ease); }
+.menu-button[aria-expanded="true"] .menu-lines i:first-child { transform: translateY(3px) rotate(45deg); }
+.menu-button[aria-expanded="true"] .menu-lines i:last-child { transform: translateY(-3px) rotate(-45deg); }
+.mobile-menu nav a[aria-current="page"] { color: var(--copper); }
+
+.text-link .action-icon, .header-enquiry .action-icon,
+.button-primary .ui-icon, .button-secondary .ui-icon, .button-ghost .ui-icon,
+.creator-contact-link > .ui-icon, .creator-choices .ui-icon,
+.home-service-list .action-icon, .service-example .action-icon {
+  transition: transform var(--motion-fast) var(--motion-ease);
+}
+.inspection-tabs button, .hotspot, .hotspot-list button,
+.gallery-filters button, .lightbox button, .compare-control button,
+.interest-grid label, .header-enquiry, .service-example, .creator-choices a {
+  transition: color var(--motion-fast), background-color var(--motion-fast), border-color var(--motion-fast);
+}
+:is(.button-primary,.button-secondary,.button-ghost,.header-enquiry,.gallery-filters button,.lightbox button,.menu-button):active { opacity: .78; }
+.hotspot:active { background: var(--copper); }
+.text-link:focus-visible .action-icon, .creator-contact-link:focus-visible > .ui-icon { transform: translate(2px,-2px); }
+
+@media (hover: hover) and (pointer: fine) {
+  .desktop-nav a:hover::after { transform: scaleX(1); }
+  :is(.text-link,.header-enquiry,.service-example,.home-service-list a):hover .action-icon,
+  :is(.button-primary,.button-secondary,.button-ghost,.creator-contact-link,.creator-choices a):hover .ui-icon { transform: translate(2px,-2px); }
+  .inspection-tabs button:hover, .hotspot-list button:hover, .compare-control button:hover { color: var(--copper); }
+  .gallery-filters button:hover { border-color: var(--copper); color: var(--white); }
+  .feature-image-link:hover .reveal-image.is-visible img { transform: scale(1.025); }
+}
+
+@media (max-width: 900px) {
+  /* Menu height is fixed by its contents. Only opacity and transform animate. */
+  .mobile-menu {
+    opacity: 0;
+    transform: translateY(-10px);
+    pointer-events: none;
+    transition: opacity 180ms var(--motion-ease), transform 220ms var(--motion-ease), visibility 0s 220ms;
+  }
+  .mobile-menu.is-open {
+    opacity: 1;
+    transform: none;
+    pointer-events: auto;
+    transition-delay: 0s;
+  }
+}
+
+@media (max-width: 700px), (hover: none) {
+  .reveal-content.reveal-ready { transform: translateY(12px); }
+  .reveal-content.reveal-ready.is-visible { transform: none; }
+  .reveal-image::after { display: none; }
+  .reveal-image.reveal-ready { opacity: 0; transform: translateY(8px); transition: opacity 480ms var(--motion-ease), transform 480ms var(--motion-ease); }
+  .reveal-image.reveal-ready.is-visible { opacity: 1; transform: none; }
+  .reveal-image.reveal-ready img, .reveal-image.reveal-ready.is-visible img { transform: none; }
+  .reveal-stagger.reveal-ready > :nth-child(n) { transition-delay: 0ms; }
+  .gallery-tile:nth-child(n) { animation-delay: 0ms; }
+  a:hover .media-frame img, .gallery-tile:hover img, .vehicle-card:hover .vehicle-card-open, .button-primary:hover { transform: none; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { animation: none !important; transition: none !important; scroll-behavior: auto !important; }
+  .reveal.reveal-ready, .reveal-stagger.reveal-ready > :is(div,article) { opacity: 1; transform: none; }
+  .reveal-image::after { display: none; }
+  .reveal-image.reveal-ready img, .reveal-stagger.reveal-ready .philosophy-rule { transform: none; }
+  a:hover .media-frame img, .gallery-tile:hover img, .vehicle-card:hover .vehicle-card-open,
+  .button-primary:hover, .text-link .action-icon, .header-enquiry .action-icon,
+  .button-primary .ui-icon, .button-secondary .ui-icon, .button-ghost .ui-icon,
+  .creator-contact-link > .ui-icon, .creator-choices .ui-icon,
+  .home-service-list .action-icon, .service-example .action-icon { transform: none !important; }
+}

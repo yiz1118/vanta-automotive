@@ -4,6 +4,7 @@ import "@fontsource/instrument-sans/400.css";
 import "@fontsource/instrument-sans/600.css";
 import "@fontsource/ibm-plex-mono/400.css";
 import "./globals.css";
+import "./motion.css";
 import { SiteHeader } from "@/components/site-header";
 import { SiteFooter } from "@/components/site-footer";
 import { creator, creatorProject } from "@/config/creator";
